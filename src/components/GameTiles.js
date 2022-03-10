@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from 'axios';
 
@@ -43,6 +43,7 @@ const KeyboardContainer = styled.div`
     width: 510px;
     display: flex;
     flex-wrap: wrap;
+    padding-top: 50px;
 `
 const KeyButton = styled.div`
     width: 43px;
@@ -144,8 +145,16 @@ const NotInDictionary = styled.div`
     font-size: 22px;
     font-weight: 600;
 `
+const HardModeError = styled.div`
+    color: red;
+    font-size: 22px;
+    font-weight: 600;
+    width: 75%;
+    text-align: center;
+    padding-top: 30px;
+`;
 
-const GameTiles = () => {
+const GameTiles = ({ hardMode }) => {
     const [currentRow, setCurrentRow] = useState(0)
     const [currentTile, setCurrentTile] = useState(0)
     const [winnerWinner, setWinnerWinner] = useState(false)
@@ -192,6 +201,8 @@ const GameTiles = () => {
         ['', '', '', '', ''],
         ['', '', '', '', ''],
     ])
+    const [hardModeTiles, setHardModeTiles] = useState([])
+    const [hardModeError, setHardModeError] = useState(false)
 
     const getWordle = () => {
         fetch('http://localhost:8000/word')
@@ -221,6 +232,7 @@ const GameTiles = () => {
                 resetGame()
                 return
             } else {
+                setHardModeError(false)
                 checkRow()
                 return
             }
@@ -274,23 +286,29 @@ const GameTiles = () => {
                     setIsAValidWord(false)
                     return
                 } else {
-                    await flipTile()
-                    if (wordle === guess) {
-                        setWinnerWinner(true)
-                        setGameOver(true)
-                        return
+                    // checks if guess contains all the yellow/green tiles
+                    const found = hardModeTiles.every(r => guessRows[currentRow].indexOf(r) >= 0)
+
+                    if (!found && hardModeTiles.length > 0 && hardMode) {
+                        setHardModeError(true)
                     } else {
-                        if (currentRow >= 5) {
+                        await flipTile()
+                        if (wordle === guess) {
+                            setWinnerWinner(true)
                             setGameOver(true)
-                            setLoser(true)
                             return
-                        }
-                        if (currentRow < 5) {
-                            setCurrentRow(currentRow + 1)
-                            setCurrentTile(0)
+                        } else {
+                            if (currentRow >= 5) {
+                                setGameOver(true)
+                                setLoser(true)
+                                return
+                            }
+                            if (currentRow < 5) {
+                                setCurrentRow(currentRow + 1)
+                                setCurrentTile(0)
+                            }
                         }
                     }
-
                 }
             } catch (err) {
                 console.error(err)
@@ -317,9 +335,15 @@ const GameTiles = () => {
                 if (guess.letter === wordle[index]) {
                     guess.color = 'green-overlay'
                     checkWordle = checkWordle.replace(guess.letter, '')
+                    if (!hardModeTiles.includes(guess.letter)) {
+                        setHardModeTiles(hardModeTiles => [...hardModeTiles, guess.letter])
+                    }
                 } else if (checkWordle.includes(guess.letter)) {
                     guess.color = 'yellow-overlay'
                     checkWordle = checkWordle.replace(guess.letter, '')
+                    if (!hardModeTiles.includes(guess.letter)) {
+                        setHardModeTiles(hardModeTiles => [...hardModeTiles, guess.letter])
+                    }
                 }
             })
 
@@ -380,6 +404,7 @@ const GameTiles = () => {
             ['', '', '', '', ''],
             ['', '', '', '', ''],
         ])
+        setHardModeTiles([])
         setLoser(false)
         getWordle()
     }
@@ -437,6 +462,11 @@ const GameTiles = () => {
             <GameTileContainer>
                 {getGameTiles()}
             </GameTileContainer>
+            {hardModeError && (
+                <HardModeError>
+                    Hard mode is on, you must use all the yellow and green letters from previous guesses.
+                </HardModeError>
+            )}
             {winnerWinner && (
                 <WinMessage>
                     <div className="you-win">

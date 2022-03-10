@@ -1,6 +1,8 @@
+import React, { useState } from "react";
 import './App.css';
-import GameTiles from './components/GameTiles.js';
+import GameTiles from './components/GameTiles';
 import styled from 'styled-components';
+import NavBar from "./components/NavBar";
 
 const Application = styled.div`
   display: flex;
@@ -33,13 +35,17 @@ const GameContainer = styled.div`
 `;
 
 function App() {
+  const [hardMode, setHardMode] = useState(false)
+
+
   return (
     <Application>
+      <NavBar hardMode={hardMode} setHardMode={setHardMode} />
       <Header>
         Wordle Clone
       </Header>
       <GameContainer>
-        <GameTiles />
+        <GameTiles hardMode={hardMode} />
       </GameContainer>
     </Application>
   );
