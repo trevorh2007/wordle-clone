@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from 'axios';
+import Definition from "./Definition";
 
 const GameTileContainer = styled.div`
     display: flex;
@@ -97,18 +98,6 @@ const WinMessage = styled.div`
         margin-top: 3px;
         color: #538d4e;
     }
-    .definition {
-        width: 500px;
-        font-size: 16px;
-        margin-top: 15px;
-        white-space: break-spaces;
-        .def-header {
-            text-align: center;
-            font-size: 18px;
-            padding-bottom: 10px;
-            text-decoration: underline;
-        }
-    }
 `
 const LoseMessage = styled.div`
     display: flex;
@@ -127,11 +116,6 @@ const LoseMessage = styled.div`
         text-align: center;
         margin: 10px 0;
         color: red;
-    }
-    .definition {
-        width: 500px;
-        font-size: 16px;
-        margin-top: 15px;
     }
 `
 const GameOver = styled.button`
@@ -223,9 +207,6 @@ const GameTiles = ({ hardMode }) => {
     useEffect(() => {
         if (wordle === '') {
             getWordle()
-        }
-        if (wordle && !definition) {
-            getWordleDefinition()
         }
 
         window.addEventListener('keydown', handleKeyDown)
@@ -420,26 +401,7 @@ const GameTiles = ({ hardMode }) => {
         getWordle()
     }
 
-    const getWordleDefinition = async () => {
-        const response = await axios(`http://localhost:8000/definition/?word=${wordle}`)
-        let fullDef = ''
-        for (const def of Object.values(response.data)) {
-            fullDef += def
-        }
-        fullDef = fullDef.replace(/\((nou)\)|\((adj)\)|\((vrb)\)/g, '')
-        let reallyFullDef = ''
-        for (const [index, prettyDef] of fullDef.split('\n').entries()) {
-            reallyFullDef += (index + 1) + '.' + prettyDef + '\n'
-        }
 
-        setDefinition(reallyFullDef);
-
-        return (
-            <div className="definition">
-                Definition: {definition}
-            </div>
-        )
-    }
 
     const getGameTiles = () => {
         return guessRows.map((tile, i) => {
@@ -488,14 +450,11 @@ const GameTiles = ({ hardMode }) => {
                     <div className="roboto-wordle">
                         {wordle}
                     </div>
-                    <div className="definition">
-                        <div className="def-header">
-                            Definition
-                        </div>
-                        <div>
-                            {definition}
-                        </div>
-                    </div>
+                    <Definition
+                        wordle={wordle}
+                        definition={definition}
+                        setDefinition={setDefinition}
+                    />
                 </WinMessage>
             )}
             {loser && (
@@ -506,14 +465,11 @@ const GameTiles = ({ hardMode }) => {
                     <div className="roboto-wordle-lose">
                         {wordle}
                     </div>
-                    <div className="definition">
-                        <div className="def-header">
-                            Definition
-                        </div>
-                        <div>
-                            {definition}
-                        </div>
-                    </div>
+                    <Definition
+                        wordle={wordle}
+                        definition={definition}
+                        setDefinition={setDefinition}
+                    />
                 </LoseMessage>
             )}
             {gameOver && (
