@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import HardMode from './HardMode'
+import Share from "./Share";
 
 const NavBarContainer = styled.div`
     width: 100%;
@@ -8,17 +9,16 @@ const NavBarContainer = styled.div`
     background: #333;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
 `;
 
-const NavBar = ({ hardMode, setHardMode, hardModeTiles, setHardModeTiles }) => {
+const NavBar = ({ hardMode, setHardMode }) => {
     return (
         <NavBarContainer>
+            <Share />
             <HardMode
                 hardMode={hardMode}
                 setHardMode={setHardMode}
-                hardModeTiles={hardModeTiles}
-                setHardModeTiles={setHardModeTiles}
             />
         </NavBarContainer>
     )

@@ -5,3 +5,25 @@
   height: 100vh;
   width: 100vw;
 }
+
+.Modal {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 500px;
+  height: 30vh;
+  transform: translate(-50%, -50%);
+  background: #333;
+  padding: 30px;
+}
+.Modal:focus-visible {
+  outline: none;
+}
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+}
