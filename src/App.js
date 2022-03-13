@@ -25,6 +25,9 @@ const Application = styled.div`
 const Header = styled.div`
   font-size: 48px;
   font-weight: 600;
+  padding-top: 25px;
+  color: ${props => props.hardMode ? 'red' : '#fff'};
+  transition: 1s all ease;
 `;
 const GameContainer = styled.div`
   height: 60vh;
@@ -37,11 +40,10 @@ const GameContainer = styled.div`
 function App() {
   const [hardMode, setHardMode] = useState(false)
 
-
   return (
     <Application>
       <NavBar hardMode={hardMode} setHardMode={setHardMode} />
-      <Header>
+      <Header hardMode={hardMode}>
         Wordle Clone
       </Header>
       <GameContainer>

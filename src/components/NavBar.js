@@ -4,7 +4,7 @@ import HardMode from './HardMode'
 
 const NavBarContainer = styled.div`
     width: 100%;
-    height: 40px;
+    height: 50px;
     background: #333;
     display: flex;
     align-items: center;
