@@ -20,7 +20,6 @@ app.get('/word', (req, res) => {
     };
 
     axios.request(options).then(response => {
-        console.log(response.data);
         res.json(response.data[0])
     }).catch(error => {
         console.error(error);
@@ -42,7 +41,6 @@ app.get('/check', (req, res) => {
 
     axios.request(options).then(response => {
         res.json(response.data.result_msg)
-        console.log(response.data);
     }).catch(error => {
         console.error(error);
     });

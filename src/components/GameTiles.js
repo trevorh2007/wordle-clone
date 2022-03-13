@@ -101,6 +101,13 @@ const WinMessage = styled.div`
         width: 500px;
         font-size: 16px;
         margin-top: 15px;
+        white-space: break-spaces;
+        .def-header {
+            text-align: center;
+            font-size: 18px;
+            padding-bottom: 10px;
+            text-decoration: underline;
+        }
     }
 `
 const LoseMessage = styled.div`
@@ -204,18 +211,21 @@ const GameTiles = ({ hardMode }) => {
     const [hardModeTiles, setHardModeTiles] = useState([])
     const [hardModeError, setHardModeError] = useState(false)
 
-    const getWordle = () => {
-        fetch('http://localhost:8000/word')
-            .then(res => res.json())
-            .then(json => {
-                setWordle(json.toUpperCase())
-            })
-            .catch(err => console.error(err))
+    const getWordle = async () => {
+        try {
+            const response = await axios('http://localhost:8000/word')
+            setWordle(response.data.toUpperCase())
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     useEffect(() => {
         if (wordle === '') {
             getWordle()
+        }
+        if (wordle && !definition) {
+            getWordleDefinition()
         }
 
         window.addEventListener('keydown', handleKeyDown)
@@ -406,24 +416,24 @@ const GameTiles = ({ hardMode }) => {
         ])
         setHardModeTiles([])
         setLoser(false)
+        setDefinition('')
         getWordle()
     }
 
-    const getWordleDefinition = () => {
-        const guess = guessRows[currentRow].join('')
-        fetch(`http://localhost:8000/definition/?word=${guess}`)
-            .then(res => res.json())
-            .then(json => {
-                if (json.noun) {
-                    setDefinition(json.noun)
-                } else if (json.verb) {
-                    setDefinition(json.verb)
-                } else if (json.adverb) {
-                    setDefinition(json.adverb)
-                } else if (json.adjective) {
-                    setDefinition(json.adjective)
-                }
-            })
+    const getWordleDefinition = async () => {
+        const response = await axios(`http://localhost:8000/definition/?word=${wordle}`)
+        let fullDef = ''
+        for (const def of Object.values(response.data)) {
+            fullDef += def
+        }
+        fullDef = fullDef.replace(/\((nou)\)|\((adj)\)|\((vrb)\)/g, '')
+        let reallyFullDef = ''
+        for (const [index, prettyDef] of fullDef.split('\n').entries()) {
+            reallyFullDef += (index + 1) + '.' + prettyDef + '\n'
+        }
+
+        setDefinition(reallyFullDef);
+
         return (
             <div className="definition">
                 Definition: {definition}
@@ -478,7 +488,14 @@ const GameTiles = ({ hardMode }) => {
                     <div className="roboto-wordle">
                         {wordle}
                     </div>
-                    {getWordleDefinition()}
+                    <div className="definition">
+                        <div className="def-header">
+                            Definition
+                        </div>
+                        <div>
+                            {definition}
+                        </div>
+                    </div>
                 </WinMessage>
             )}
             {loser && (
@@ -489,7 +506,14 @@ const GameTiles = ({ hardMode }) => {
                     <div className="roboto-wordle-lose">
                         {wordle}
                     </div>
-                    {getWordleDefinition()}
+                    <div className="definition">
+                        <div className="def-header">
+                            Definition
+                        </div>
+                        <div>
+                            {definition}
+                        </div>
+                    </div>
                 </LoseMessage>
             )}
             {gameOver && (
