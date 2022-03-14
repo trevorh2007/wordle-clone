@@ -26,7 +26,7 @@ const ToggleOff = styled.div`
     border-bottom-left-radius: 3px;
     padding: 5px 8px;
     color: #fff;
-    background: ${props => props.$hard ? '' : 'green'};
+    background: ${props => props.$hard ? '' : '#538d4e'};
     transition: 0.5s all ease;
 `;
 const ToggleOn = styled.div`

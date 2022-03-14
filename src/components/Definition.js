@@ -32,7 +32,7 @@ const Definition = ({ wordle, definition, setDefinition }) => {
         for (const def of Object.values(response.data)) {
             fullDef += def
         }
-        fullDef = fullDef.replace(/\((nou)\)\s|\((adj)\)\s|\((vrb)\)\s/g, '')
+        fullDef = fullDef.replace(/\((nou)\)\s|\((adj)\)\s|\((vrb)\)\s|\((adv)\)\s/g, '')
         let reallyFullDef = ''
         for (const [index, prettyDef] of fullDef.split('\n').entries()) {
             reallyFullDef += (index + 1) + '. ' + prettyDef.charAt(0).toUpperCase() + prettyDef.slice(1) + '\n'

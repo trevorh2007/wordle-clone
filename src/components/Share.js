@@ -8,7 +8,7 @@ const ShareContainer = styled.div`
 const ShareButton = styled.div`
     user-select: none;
     padding: 5px 15px;
-    background: green;
+    background: #538d4e;
     border-radius: 3px;
     color: #fff;
     font-weight: 600;

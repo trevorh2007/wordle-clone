@@ -232,7 +232,7 @@ const GameTiles = ({ hardMode }) => {
             deleteLetter()
             return
         }
-        if (currentTile < 5 && currentRow < 6) {
+        if (e.keyCode >= 65 && e.keyCode <= 90 && currentTile < 5 && currentRow < 6) {
             addLetter(e.key.toUpperCase())
         }
     }
