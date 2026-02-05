@@ -67,6 +67,7 @@ export default [
         clearTimeout: 'readonly',
         clearInterval: 'readonly',
         HTMLDivElement: 'readonly',
+        fetch: 'readonly',
       },
     },
     settings: {
@@ -129,6 +130,7 @@ export default [
         clearTimeout: 'readonly',
         clearInterval: 'readonly',
         HTMLDivElement: 'readonly',
+        fetch: 'readonly',
       },
     },
     settings: {
@@ -158,6 +160,7 @@ export default [
         beforeAll: 'readonly',
         afterAll: 'readonly',
         jest: 'readonly',
+        global: 'readonly',
       },
     },
     rules: {
