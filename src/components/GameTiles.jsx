@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -198,8 +197,9 @@ const GameTiles = ({ hardMode }) => {
 
   const getWordle = async () => {
     try {
-      const response = await axios("http://localhost:8000/word");
-      setWordle(response.data.toUpperCase());
+      const response = await fetch("http://localhost:8000/word");
+      const data = await response.json();
+      setWordle(data.toUpperCase());
     } catch (err) {
       console.error(err);
     }
@@ -278,10 +278,11 @@ const GameTiles = ({ hardMode }) => {
     const guess = guessRows[currentRow].join("");
     if (currentTile === 5) {
       try {
-        const response = await axios(
+        const response = await fetch(
           `http://localhost:8000/check/?word=${guess}`,
         );
-        if (response.data === "Entry word not found") {
+        const data = await response.json();
+        if (data === "Entry word not found") {
           setIsAValidWord(false);
           return;
         } else {

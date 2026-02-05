@@ -1,11 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import GameTiles from '../GameTiles';
-import axios from 'axios';
 
-// Mock axios
-jest.mock('axios');
-
-const mockedAxios = axios as jest.MockedFunction<typeof axios>;
+const mockedFetch = global.fetch as jest.Mock;
 
 // Mock Definition component
 jest.mock('../Definition', () => {
@@ -17,8 +13,11 @@ jest.mock('../Definition', () => {
 describe('GameTiles', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Mock the axios call for getting wordle
-    mockedAxios.mockResolvedValue({ data: { word: 'REACT' } } as any);
+    // Mock the fetch call for getting wordle
+    mockedFetch.mockResolvedValue({
+      json: () => Promise.resolve('REACT'),
+      ok: true,
+    } as any);
   });
 
   it('renders without crashing', () => {
