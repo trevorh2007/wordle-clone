@@ -28,7 +28,7 @@ const Header = styled.div`
   font-size: 48px;
   font-weight: 600;
   padding-top: 25px;
-  color: ${(props) => (props.hardMode ? "red" : "#fff")};
+  color: ${(props) => (props.$hardMode ? "red" : "#fff")};
   transition: 1s all ease;
 `;
 const GameContainer = styled.div`
@@ -45,7 +45,7 @@ function App() {
   return (
     <Application>
       <NavBar hardMode={hardMode} setHardMode={setHardMode} />
-      <Header hardMode={hardMode}>Wordle Clone</Header>
+      <Header $hardMode={hardMode}>Wordle Clone</Header>
       <GameContainer>
         <GameTiles hardMode={hardMode} />
       </GameContainer>

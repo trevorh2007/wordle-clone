@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
+import { getApiKey } from "../config/env";
+
 const DefinitionContainer = styled.div`
   width: 500px;
   font-size: 16px;
@@ -27,11 +29,17 @@ const Definition = ({ wordle, definition, setDefinition }) => {
 
   const getWordleDefinition = async () => {
     const response = await fetch(
-      `http://localhost:8000/definition/?word=${wordle}`,
+      `https://twinword-word-graph-dictionary.p.rapidapi.com/definition/?entry=${wordle}`,
+      {
+        headers: {
+          "x-rapidapi-host": "twinword-word-graph-dictionary.p.rapidapi.com",
+          "x-rapidapi-key": getApiKey(),
+        },
+      },
     );
     const data = await response.json();
     let fullDef = "";
-    for (const def of Object.values(data)) {
+    for (const def of Object.values(data.meaning)) {
       fullDef += def;
     }
     fullDef = fullDef.replace(

@@ -49,10 +49,10 @@ describe('Share', () => {
     render(<Share />);
     const shareButton = screen.getByText('Share');
     fireEvent.click(shareButton);
-    
+
     const modal = screen.getByTestId('modal');
     fireEvent.click(modal);
-    
+
     expect(screen.queryByText('Share stuff goes here')).not.toBeInTheDocument();
   });
 

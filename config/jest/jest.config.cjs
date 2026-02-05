@@ -20,6 +20,7 @@ module.exports = {
     '!src/**/*.d.ts',
     '!src/index.js',
     '!src/setupTests.js',
+    '!src/config/env.js',
   ],
   coverageThreshold: {
     global: {

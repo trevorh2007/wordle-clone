@@ -11,7 +11,7 @@ describe('index', () => {
 
     // Mock the modules
     jest.spyOn(document, 'getElementById').mockImplementation(mockGetElementById);
-    
+
     // Use doMock to mock react-dom/client before the module is loaded
     jest.doMock('react-dom/client', () => ({
       __esModule: true,
