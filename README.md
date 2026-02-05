@@ -79,25 +79,6 @@ npm run validate
 npm run deploy
 ```
 
-## 📝 Project Structure
-
-```
-wordle-clone/
-├── config/              # Configuration files
-│   ├── jest/           # Jest configuration
-│   ├── eslint.config.js
-│   └── prettier.config.js
-├── public/             # Static assets
-├── src/
-│   ├── components/     # React components
-│   ├── __tests__/      # Test files
-│   ├── App.js
-│   └── index.js
-├── .github/
-│   └── workflows/      # GitHub Actions
-└── vite.config.js      # Vite configuration
-```
-
 ## 🚀 Deployment
 
 This project is configured for automatic deployment to GitHub Pages using GitHub Actions.
@@ -118,4 +99,5 @@ MIT
 ## 👤 Author
 
 **Trevor Howard**
+
 - GitHub: [@trevorh2007](https://github.com/trevorh2007)
