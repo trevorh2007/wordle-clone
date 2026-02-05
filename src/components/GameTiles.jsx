@@ -126,6 +126,11 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
 
           if (!found && hardModeTiles.length > 0 && hardMode) {
             setHardModeError(true);
+            // Clear the current row when hard mode error occurs
+            let clearedGuessRows = [...guessRows];
+            clearedGuessRows[currentRow] = ["", "", "", "", ""];
+            setGuessRows(clearedGuessRows);
+            setCurrentTile(0);
           } else {
             await flipTile();
             if (wordle === guess) {

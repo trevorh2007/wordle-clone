@@ -30,6 +30,16 @@ const Header = styled.div`
   padding-top: 25px;
   color: ${(props) => (props.$hardMode ? "red" : "#fff")};
   transition: 1s all ease;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 36px;
+    padding-top: 15px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 28px;
+  }
 `;
 const GameContainer = styled.div`
   height: 60vh;
@@ -37,6 +47,13 @@ const GameContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: 60vh;
+    justify-content: flex-start;
+  }
 `;
 
 function App() {

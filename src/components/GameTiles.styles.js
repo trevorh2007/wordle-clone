@@ -5,6 +5,14 @@ export const GameTileContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
+
+  @media (max-width: 768px) {
+    margin-top: 30px;
+  }
+
+  @media (max-width: 480px) {
+    margin-top: 20px;
+  }
 `;
 
 export const TileRow = styled.div`
@@ -37,6 +45,19 @@ export const Tile = styled.div`
   align-items: center;
   margin: 2px;
   user-select: none;
+
+  @media (max-width: 768px) {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+  }
+
+  @media (max-width: 480px) {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    margin: 1px;
+  }
 `;
 
 export const KeyboardContainer = styled.div`
@@ -44,6 +65,23 @@ export const KeyboardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding-top: 50px;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    width: 460px;
+    padding-top: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  @media (max-width: 480px) {
+    width: 360px;
+    padding-top: 20px;
+  }
+
+  @media (max-width: 380px) {
+    width: 310px;
+  }
 `;
 
 export const KeyButton = styled.div`
@@ -74,6 +112,58 @@ export const KeyButton = styled.div`
     transform: scale(0.95);
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
   }
+
+  @media (max-width: 768px) {
+    width: 38px;
+    height: 50px;
+    margin: 3px;
+    font-size: 14px;
+    &:nth-child(11) {
+      margin-left: 18px;
+    }
+    &:nth-child(20) {
+      width: 60px;
+    }
+    &:nth-child(28) {
+      width: 60px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 30px;
+    height: 44px;
+    margin: 2.5px;
+    font-size: 12px;
+    &:nth-child(11) {
+      margin-left: 14px;
+    }
+    &:nth-child(20) {
+      width: 50px;
+      font-size: 10px;
+    }
+    &:nth-child(28) {
+      width: 50px;
+      font-size: 10px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    width: 26px;
+    height: 40px;
+    margin: 2px;
+    font-size: 11px;
+    &:nth-child(11) {
+      margin-left: 12px;
+    }
+    &:nth-child(20) {
+      width: 44px;
+      font-size: 9px;
+    }
+    &:nth-child(28) {
+      width: 44px;
+      font-size: 9px;
+    }
+  }
 `;
 
 export const WinMessage = styled.div`
@@ -83,6 +173,7 @@ export const WinMessage = styled.div`
   font-size: 48px;
   font-weight: 600;
   margin: 25px 0;
+  padding: 0 20px;
   .you-win {
     font-size: 28px;
     color: #538d4e;
@@ -99,6 +190,33 @@ export const WinMessage = styled.div`
     margin-top: 3px;
     color: #538d4e;
   }
+
+  @media (max-width: 768px) {
+    font-size: 36px;
+    margin: 15px 0;
+    .you-win {
+      font-size: 24px;
+    }
+    .solution-was {
+      font-size: 24px;
+    }
+    .roboto-wordle {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    font-size: 28px;
+    .you-win {
+      font-size: 20px;
+    }
+    .solution-was {
+      font-size: 20px;
+    }
+    .roboto-wordle {
+      font-size: 18px;
+    }
+  }
 `;
 
 export const LoseMessage = styled.div`
@@ -109,6 +227,7 @@ export const LoseMessage = styled.div`
   font-weight: 600;
   margin: 25px 0;
   color: red;
+  padding: 0 20px;
   .solution-was-lose {
     font-size: 28px;
   }
@@ -118,6 +237,27 @@ export const LoseMessage = styled.div`
     text-align: center;
     margin: 10px 0;
     color: red;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 36px;
+    margin: 15px 0;
+    .solution-was-lose {
+      font-size: 24px;
+    }
+    .roboto-wordle-lose {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    font-size: 28px;
+    .solution-was-lose {
+      font-size: 20px;
+    }
+    .roboto-wordle-lose {
+      font-size: 18px;
+    }
   }
 `;
 
@@ -133,12 +273,34 @@ export const GameOver = styled.button`
     background: #616161;
     cursor: pointer;
   }
+
+  @media (max-width: 768px) {
+    padding: 12px 20px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 18px;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
 `;
 
 export const NotInDictionary = styled.div`
   color: red;
   font-size: 22px;
   font-weight: 600;
+  text-align: center;
+  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 export const HardModeError = styled.div`
@@ -148,4 +310,18 @@ export const HardModeError = styled.div`
   width: 75%;
   text-align: center;
   padding-top: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    width: 90%;
+    padding-top: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    width: 95%;
+    padding-top: 15px;
+  }
 `;
