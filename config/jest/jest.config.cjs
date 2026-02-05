@@ -20,7 +20,7 @@ module.exports = {
     '!src/**/*.d.ts',
     '!src/index.js',
     '!src/setupTests.js',
-    '!src/config/env.js',
+    '!src/api/wordApi.js',
   ],
   coverageThreshold: {
     global: {
