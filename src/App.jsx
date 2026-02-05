@@ -8,9 +8,13 @@ import "./App.css";
 
 const Application = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background: #000;
+
   .grey-overlay {
     background: #3a3a3c !important;
     border: none !important;
