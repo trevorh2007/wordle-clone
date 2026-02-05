@@ -9,7 +9,6 @@ const StatsContainer = styled.div`
   gap: 15px;
   color: #fff;
   font-size: 18px;
-  padding-left: 2rem;
 
   @media (max-width: 768px) {
     gap: 10px;
@@ -19,7 +18,6 @@ const StatsContainer = styled.div`
   @media (max-width: 480px) {
     gap: 8px;
     font-size: 14px;
-    padding-left: 0;
   }
 `;
 

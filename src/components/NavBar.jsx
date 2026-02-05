@@ -14,6 +14,7 @@ const NavBarContainer = styled.div`
   justify-content: space-between;
   padding: 8px 20px;
   gap: 20px;
+  box-sizing: border-box;
 
   @media (max-width: 768px) {
     /* flex-direction: column; */
