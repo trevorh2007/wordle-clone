@@ -6,6 +6,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import importPlugin from 'eslint-plugin-import';
 import jestDom from 'eslint-plugin-jest-dom';
 import testingLibrary from 'eslint-plugin-testing-library';
+import tseslint from 'typescript-eslint';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -61,6 +62,11 @@ export default [
         module: 'readonly',
         __dirname: 'readonly',
         __filename: 'readonly',
+        setTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearTimeout: 'readonly',
+        clearInterval: 'readonly',
+        HTMLDivElement: 'readonly',
       },
     },
     settings: {
@@ -83,8 +89,64 @@ export default [
       ],
     },
   },
+  ...tseslint.configs.recommended.map((config) => ({
+    ...config,
+    files: ['**/*.{ts,tsx}'],
+  })),
   {
-    files: ['**/*.test.{js,jsx}', '**/__tests__/**/*.{js,jsx}'],
+    files: ['**/*.{ts,tsx}'],
+    plugins: {
+      react,
+      'react-hooks': reactHooks,
+      import: importPlugin,
+      prettier,
+      'jest-dom': jestDom,
+      'testing-library': testingLibrary,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        React: 'readonly',
+        JSX: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        console: 'readonly',
+        process: 'readonly',
+        require: 'readonly',
+        module: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        setTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearTimeout: 'readonly',
+        clearInterval: 'readonly',
+        HTMLDivElement: 'readonly',
+      },
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+    rules: {
+      'react/react-in-jsx-scope': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+  {
+    files: ['**/*.test.{js,jsx,ts,tsx}', '**/__tests__/**/*.{js,jsx,ts,tsx}', '**/setupTests.js'],
+    plugins: {
+      'jest-dom': jestDom,
+      'testing-library': testingLibrary,
+    },
     languageOptions: {
       globals: {
         describe: 'readonly',
@@ -103,6 +165,7 @@ export default [
       'testing-library/await-async-queries': 'error',
       'jest-dom/prefer-checked': 'error',
       'jest-dom/prefer-enabled-disabled': 'error',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ];

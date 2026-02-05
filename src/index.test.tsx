@@ -21,6 +21,7 @@ describe('index', () => {
     }));
 
     // Now require index.jsx which will use our mocks
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require('./index.jsx');
 
     // Verify getElementById was called with 'root'

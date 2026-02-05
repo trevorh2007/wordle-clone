@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import GameTiles from '../GameTiles';
 import axios from 'axios';
-import React from 'react';
 
 // Mock axios
 jest.mock('axios');
