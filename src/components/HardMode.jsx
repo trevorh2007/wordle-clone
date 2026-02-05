@@ -8,6 +8,10 @@ const HardModeContainer = styled.div`
   justify-content: space-between;
   padding-right: 30px;
   margin-left: auto;
+
+  @media (max-width: 480px) {
+    padding-right: 0;
+  }
 `;
 const ToggleSwitch = styled.div`
   display: flex;

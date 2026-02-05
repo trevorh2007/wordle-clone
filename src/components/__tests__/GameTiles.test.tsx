@@ -344,32 +344,29 @@ describe('GameTiles', () => {
     });
   });
 
-  it(
-    'shows loser message after 6 failed attempts',
-    async () => {
-      jest.mocked(wordApi.getIsWordFetch).mockResolvedValue(true);
+  it('shows loser message after 6 failed attempts', async () => {
+    jest.mocked(wordApi.getIsWordFetch).mockResolvedValue(true);
 
-      render(<GameTiles hardMode={false} flipDelay={0} />);
-      await waitFor(() => {
-        expect(document.getElementById('T')).toBeInTheDocument();
+    render(<GameTiles hardMode={false} flipDelay={0} />);
+    await waitFor(() => {
+      expect(document.getElementById('T')).toBeInTheDocument();
+    });
+
+    // Make 6 wrong guesses
+    for (let i = 0; i < 6; i++) {
+      ['T', 'E', 'S', 'T', 'S'].forEach((letter) => {
+        fireEvent.click(document.getElementById(letter)!);
       });
+      fireEvent.click(document.getElementById('ENTER')!);
+      // Wait for async operations (instant flip with flipDelay=0, but need time for promises)
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
 
-      // Make 6 wrong guesses
-      for (let i = 0; i < 6; i++) {
-        ['T', 'E', 'S', 'T', 'S'].forEach((letter) => {
-          fireEvent.click(document.getElementById(letter)!);
-        });
-        fireEvent.click(document.getElementById('ENTER')!);
-        // Wait for async operations (instant flip with flipDelay=0, but need time for promises)
-        await new Promise((resolve) => setTimeout(resolve, 50));
-      }
-
-      await waitFor(() => {
-        expect(screen.getByText(/Solution Was/)).toBeInTheDocument();
-        expect(screen.getByText('New game')).toBeInTheDocument();
-      });
-    },
-  );
+    await waitFor(() => {
+      expect(screen.getByText(/Solution Was/)).toBeInTheDocument();
+      expect(screen.getByText('New game')).toBeInTheDocument();
+    });
+  });
 
   it('resets game when new game button is clicked after winning', async () => {
     jest.mocked(wordApi.getWordFetch).mockResolvedValue('REACT');
@@ -456,9 +453,7 @@ describe('GameTiles', () => {
 
     // The error should show because we didn't use R and E
     await waitFor(() => {
-      const errorText = screen.queryByText(
-        /Hard mode is on.*previous guesses/,
-      );
+      const errorText = screen.queryByText(/Hard mode is on.*previous guesses/);
       // If error is shown, verify it's there
       // If not shown, it means the implementation doesn't trigger in this scenario
       // which is acceptable for this test
@@ -544,5 +539,3 @@ describe('GameTiles', () => {
     consoleError.mockRestore();
   });
 });
-
-

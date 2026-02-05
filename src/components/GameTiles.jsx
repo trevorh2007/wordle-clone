@@ -6,6 +6,7 @@ import {
   MAX_GUESSES,
   EMPTY_BOARD,
 } from "../constants/gameConstants";
+import { updateStatsWin, updateStatsLoss } from "../utils/statsStorage";
 
 import GameBoard from "./GameBoard";
 import {
@@ -71,6 +72,20 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
       addLetter(letter);
     }
   };
+
+  // Track wins
+  useEffect(() => {
+    if (winnerWinner) {
+      updateStatsWin();
+    }
+  }, [winnerWinner]);
+
+  // Track losses
+  useEffect(() => {
+    if (loser) {
+      updateStatsLoss();
+    }
+  }, [loser]);
 
   useEffect(() => {
     if (wordle === "") {
