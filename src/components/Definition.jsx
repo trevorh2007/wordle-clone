@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect } from "react";
 import styled from "styled-components";
 
@@ -27,11 +26,12 @@ const Definition = ({ wordle, definition, setDefinition }) => {
   }, []);
 
   const getWordleDefinition = async () => {
-    const response = await axios(
+    const response = await fetch(
       `http://localhost:8000/definition/?word=${wordle}`,
     );
+    const data = await response.json();
     let fullDef = "";
-    for (const def of Object.values(response.data)) {
+    for (const def of Object.values(data)) {
       fullDef += def;
     }
     fullDef = fullDef.replace(

@@ -1,9 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import Definition from '../Definition';
-import axios from 'axios';
-
-// Mock axios
-jest.mock('axios');
 
 describe('Definition', () => {
   const mockSetDefinition = jest.fn();
@@ -32,11 +28,11 @@ describe('Definition', () => {
 
   it('does not fetch definition when definition already exists', () => {
     render(<Definition wordle="test" definition="existing definition" setDefinition={mockSetDefinition} />);
-    expect(axios).not.toHaveBeenCalled();
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 
   it('does not fetch definition when wordle is not provided', () => {
     render(<Definition wordle="" definition="" setDefinition={mockSetDefinition} />);
-    expect(axios).not.toHaveBeenCalled();
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 });
