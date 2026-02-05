@@ -26,7 +26,9 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
   const [wordle, setWordle] = useState("");
   const [isAValidWord, setIsAValidWord] = useState(true);
   const [definition, setDefinition] = useState("");
-  const [guessRows, setGuessRows] = useState(EMPTY_BOARD);
+  const [guessRows, setGuessRows] = useState(() =>
+    EMPTY_BOARD.map((row) => [...row]),
+  );
   const [hardModeTiles, setHardModeTiles] = useState([]);
   const [hardModeError, setHardModeError] = useState(false);
 
@@ -241,7 +243,7 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
     setGameOver(false);
     setCurrentRow(0);
     setCurrentTile(0);
-    setGuessRows(EMPTY_BOARD);
+    setGuessRows(EMPTY_BOARD.map((row) => [...row]));
     setHardModeTiles([]);
     setLoser(false);
     setDefinition("");

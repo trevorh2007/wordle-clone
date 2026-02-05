@@ -7,6 +7,7 @@ const HardModeContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-right: 30px;
+  margin-left: auto;
 `;
 const ToggleSwitch = styled.div`
   display: flex;
