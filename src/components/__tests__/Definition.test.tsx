@@ -1,8 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import Definition from '../Definition';
+import { getDefinitionFetch } from '../../api/wordApi';
+
+jest.mock('../../api/wordApi');
 
 describe('Definition', () => {
   const mockSetDefinition = jest.fn();
+  const mockGetDefinitionFetch = getDefinitionFetch as jest.MockedFunction<
+    typeof getDefinitionFetch
+  >;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -38,11 +44,11 @@ describe('Definition', () => {
         setDefinition={mockSetDefinition}
       />
     );
-    expect(global.fetch).not.toHaveBeenCalled();
+    expect(mockGetDefinitionFetch).not.toHaveBeenCalled();
   });
 
   it('does not fetch definition when wordle is not provided', () => {
     render(<Definition wordle="" definition="" setDefinition={mockSetDefinition} />);
-    expect(global.fetch).not.toHaveBeenCalled();
+    expect(mockGetDefinitionFetch).not.toHaveBeenCalled();
   });
 });

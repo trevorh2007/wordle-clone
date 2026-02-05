@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { getApiKey } from "../config/env";
+import { getWordFetch, getIsWordFetch } from "../api/wordApi";
 
 import Definition from "./Definition";
 
@@ -199,17 +199,8 @@ const GameTiles = ({ hardMode }) => {
 
   const getWordle = async () => {
     try {
-      const response = await fetch(
-        "https://random-words5.p.rapidapi.com/getMultipleRandom?count=5&wordLength=5",
-        {
-          headers: {
-            "x-rapidapi-host": "random-words5.p.rapidapi.com",
-            "x-rapidapi-key": getApiKey(),
-          },
-        },
-      );
-      const data = await response.json();
-      setWordle(data[0].toUpperCase());
+      const word = await getWordFetch();
+      setWordle(word);
     } catch (err) {
       console.error(err);
     }
@@ -288,18 +279,8 @@ const GameTiles = ({ hardMode }) => {
     const guess = guessRows[currentRow].join("");
     if (currentTile === 5) {
       try {
-        const response = await fetch(
-          `https://twinword-word-graph-dictionary.p.rapidapi.com/theme/?entry=${guess}`,
-          {
-            headers: {
-              "x-rapidapi-host":
-                "twinword-word-graph-dictionary.p.rapidapi.com",
-              "x-rapidapi-key": getApiKey(),
-            },
-          },
-        );
-        const data = await response.json();
-        if (data.result_msg === "Entry word not found") {
+        const isValid = await getIsWordFetch(guess);
+        if (!isValid) {
           setIsAValidWord(false);
           return;
         } else {
