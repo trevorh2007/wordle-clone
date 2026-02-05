@@ -41,9 +41,14 @@ export const getIsWordFetch = async (word) => {
   try {
     // Using Free Dictionary API
     const response = await fetch(
-      `https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`,
+      `https://freedictionaryapi.com/api/v1/entries/en/${word.toLowerCase()}`,
     );
-    return response.ok;
+    const data = await response.json();
+    if (data.entries && data.entries.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
     console.error("Error validating word:", error);
     return false;
@@ -59,25 +64,22 @@ export const getDefinitionFetch = async (word) => {
   try {
     // Using Free Dictionary API
     const response = await fetch(
-      `https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`,
+      `https://freedictionaryapi.com/api/v1/entries/en/${word.toLowerCase()}`,
     );
-
-    if (!response.ok) {
-      return "Definition not available";
-    }
 
     const data = await response.json();
     let fullDef = "";
+    let defNumber = 1;
 
     // Extract definitions from the response
-    if (data && data[0] && data[0].meanings) {
-      data[0].meanings.forEach((meaning, index) => {
-        const partOfSpeech = meaning.partOfSpeech;
-        if (meaning.definitions && meaning.definitions.length > 0) {
-          meaning.definitions.forEach((def, defIndex) => {
-            if (defIndex === 0) {
-              // Only take first definition per part of speech
-              fullDef += `${index + 1}. (${partOfSpeech}) ${def.definition}\n`;
+    if (data?.entries && data.entries.length > 0) {
+      data.entries.forEach((entry) => {
+        const partOfSpeech = entry.partOfSpeech;
+        if (entry.senses && entry.senses.length > 0) {
+          entry.senses.forEach((sense) => {
+            if (sense.definition) {
+              fullDef += `${defNumber}. (${partOfSpeech}) ${sense.definition}\n`;
+              defNumber++;
             }
           });
         }
