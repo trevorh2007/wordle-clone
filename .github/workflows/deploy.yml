@@ -49,11 +49,9 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
-        continue-on-error: true
 
       - name: Run TypeScript type check
         run: npm run type-check
-        continue-on-error: true
 
   jest-tests:
     name: Jest Tests
@@ -74,7 +72,6 @@ jobs:
       - name: Run Jest tests
         id: jest
         run: npm run test:ci
-        continue-on-error: true
 
       - name: Post test results to PR
         if: github.event_name == 'pull_request'
