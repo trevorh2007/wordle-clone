@@ -44,8 +44,9 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
   const getWordle = async () => {
     try {
       setFetchingWord(true);
-      const word = await getWordFetch();
+      const { word, definition: wordDefinition } = await getWordFetch();
       setWordle(word);
+      setDefinition(wordDefinition);
       setFetchingWord(false);
     } catch (err) {
       console.error(err);
@@ -155,7 +156,8 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
     const guess = guessRows[currentRow].join("");
     if (currentTile === WORD_LENGTH) {
       try {
-        const isValid = await getIsWordFetch(guess);
+        // Skip API call if the guess is the correct word (we know it's valid)
+        const isValid = guess === wordle ? true : await getIsWordFetch(guess);
         if (!isValid) {
           setIsAValidWord(false);
           return;

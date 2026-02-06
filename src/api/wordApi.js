@@ -35,8 +35,8 @@ const fetchWithTimeout = (url, timeoutMs = 8000) => {
 };
 
 /**
- * Fetches a random 5-letter word for the game
- * @returns {Promise<string>} A random 5-letter word in uppercase
+ * Fetches a random 5-letter word for the game along with its definition
+ * @returns {Promise<{word: string, definition: Object}>} Word and definition object
  */
 export const getWordFetch = async (retryCount = 0, maxRetries = 3) => {
   try {
@@ -48,28 +48,34 @@ export const getWordFetch = async (retryCount = 0, maxRetries = 3) => {
     const data = await response.json();
 
     if (data && data[0]) {
-      // Check if word is valid in our dictionary api
-      const isWordValid = await getIsWordFetch(data[0]);
+      // Fetch definition first (also validates the word)
+      const definition = await getDefinitionFetch(data[0]);
 
-      if (!isWordValid) {
+      if (!definition) {
         if (retryCount < maxRetries) {
           console.log(
             `Invalid word "${data[0]}". Retrying... (${retryCount + 1}/${maxRetries})`,
           );
-          return await getWordFetch(retryCount + 1, maxRetries); // Recursively fetch another word if not valid;
+          return await getWordFetch(retryCount + 1, maxRetries);
         } else {
           console.log("Max retries reached. Falling back to random word.");
-          return getRandomFallbackWord();
+          const fallbackWord = getRandomFallbackWord();
+          const fallbackDefinition = await getDefinitionFetch(fallbackWord);
+          return { word: fallbackWord, definition: fallbackDefinition };
         }
       }
 
-      return data[0].toUpperCase();
+      return { word: data[0].toUpperCase(), definition };
     } else {
-      return getRandomFallbackWord();
+      const fallbackWord = getRandomFallbackWord();
+      const fallbackDefinition = await getDefinitionFetch(fallbackWord);
+      return { word: fallbackWord, definition: fallbackDefinition };
     }
   } catch (error) {
     console.error("Error fetching word:", error?.message);
-    return getRandomFallbackWord();
+    const fallbackWord = getRandomFallbackWord();
+    const fallbackDefinition = await getDefinitionFetch(fallbackWord);
+    return { word: fallbackWord, definition: fallbackDefinition };
   }
 };
 
