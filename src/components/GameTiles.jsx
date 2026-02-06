@@ -23,7 +23,7 @@ import {
 } from "./GameTiles.styles";
 import Keyboard from "./Keyboard";
 
-const GameTiles = ({ hardMode, flipDelay = 500 }) => {
+const GameTiles = ({ hardMode, flipDelay = 300 }) => {
   const [currentRow, setCurrentRow] = useState(0);
   const [currentTile, setCurrentTile] = useState(0);
   const [winnerWinner, setWinnerWinner] = useState(false);

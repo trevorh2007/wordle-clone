@@ -27,3 +27,18 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.75);
 }
+
+.green-overlay {
+  background: #538d4e !important;
+  border-color: #538d4e !important;
+}
+
+.yellow-overlay {
+  background: #b59f3b !important;
+  border-color: #b59f3b !important;
+}
+
+.grey-overlay {
+  background: #3a3a3c !important;
+  border-color: #3a3a3c !important;
+}

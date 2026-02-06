@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import GameTiles from "./components/GameTiles";
+import HowToPlay from "./components/HowToPlay";
 import NavBar from "./components/NavBar";
 
 import "./App.css";
@@ -62,9 +63,11 @@ const GameContainer = styled.div`
 
 function App() {
   const [hardMode, setHardMode] = useState(false);
+  const [showHowToPlay, setShowHowToPlay] = useState(true);
 
   return (
     <Application>
+      <HowToPlay show={showHowToPlay} setShow={setShowHowToPlay} />
       <NavBar hardMode={hardMode} setHardMode={setHardMode} />
       <Header $hardMode={hardMode}>Wordle Clone</Header>
       <GameContainer>
