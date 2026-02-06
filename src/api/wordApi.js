@@ -1,5 +1,38 @@
-// Word API functions - centralized location for all API calls
-// Change these endpoints to switch to different APIs
+import fallbackWords from "../constants/fallbackWords.json";
+
+/**
+ * Gets a random word from the fallback list
+ * @returns {string} A random 5-letter word in uppercase
+ */
+const getRandomFallbackWord = () => {
+  return fallbackWords[
+    Math.floor(Math.random() * fallbackWords.length)
+  ].toUpperCase();
+};
+
+/**
+ * Builds the Free Dictionary API URL
+ * @param {string} word - The word to look up
+ * @returns {string} The API URL
+ */
+const getDictionaryApiUrl = (word) => {
+  return `https://freedictionaryapi.com/api/v1/entries/en/${word.toLowerCase()}`;
+};
+
+/**
+ * Creates a timeout promise that rejects after specified milliseconds
+ * @param {string} url - The URL to fetch
+ * @param {number} timeoutMs - Milliseconds to wait before timing out
+ * @returns {Promise} A promise that rejects after timeout
+ */
+const fetchWithTimeout = (url, timeoutMs = 8000) => {
+  return Promise.race([
+    fetch(url),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timeout")), timeoutMs),
+    ),
+  ]);
+};
 
 /**
  * Fetches a random 5-letter word for the game
@@ -7,28 +40,28 @@
  */
 export const getWordFetch = async () => {
   try {
-    // Using Random Word API
-    const response = await fetch(
+    // Using Random Word API with 8 second timeout
+    const response = await fetchWithTimeout(
       "https://random-word-api.herokuapp.com/word?length=5&number=1",
+      8000,
     );
     const data = await response.json();
-    return data[0].toUpperCase();
+
+    if (data && data[0]) {
+      // Check if word is valid in our dictionary api
+      const wordInDictionary = await getIsWordFetch(data[0]);
+
+      if (!wordInDictionary) {
+        return getRandomFallbackWord();
+      }
+
+      return data[0].toUpperCase();
+    } else {
+      return getRandomFallbackWord();
+    }
   } catch (error) {
-    console.error("Error fetching word:", error);
-    // Fallback word list
-    const fallbackWords = [
-      "REACT",
-      "TABLE",
-      "PHONE",
-      "HOUSE",
-      "PLANT",
-      "CHAIR",
-      "WATER",
-      "BREAD",
-      "LIGHT",
-      "CLOCK",
-    ];
-    return fallbackWords[Math.floor(Math.random() * fallbackWords.length)];
+    console.error("Error fetching word:", error?.message);
+    return getRandomFallbackWord();
   }
 };
 
@@ -39,16 +72,9 @@ export const getWordFetch = async () => {
  */
 export const getIsWordFetch = async (word) => {
   try {
-    // Using Free Dictionary API
-    const response = await fetch(
-      `https://freedictionaryapi.com/api/v1/entries/en/${word.toLowerCase()}`,
-    );
+    const response = await fetch(getDictionaryApiUrl(word));
     const data = await response.json();
-    if (data.entries && data.entries.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return !!(data.entries && data.entries.length > 0);
   } catch (error) {
     console.error("Error validating word:", error);
     return false;
@@ -62,11 +88,7 @@ export const getIsWordFetch = async (word) => {
  */
 export const getDefinitionFetch = async (word) => {
   try {
-    // Using Free Dictionary API
-    const response = await fetch(
-      `https://freedictionaryapi.com/api/v1/entries/en/${word.toLowerCase()}`,
-    );
-
+    const response = await fetch(getDictionaryApiUrl(word));
     const data = await response.json();
     let fullDef = "";
     let defNumber = 1;

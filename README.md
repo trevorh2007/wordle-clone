@@ -32,65 +32,25 @@ A modern Wordle clone built with React, Vite, and styled-components.
 
 ### Installation
 
+To run locally on your machine
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/trevorh2007/wordle-clone.git
+```
+
+2. Install dependencies
+
 ```bash
 npm install
 ```
 
-### Available Scripts
+3. Start the application
 
 ```bash
-# Start development server
 npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Run tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
-
-# Lint code
-npm run lint
-
-# Fix linting issues
-npm run lint:fix
-
-# Format code
-npm run format
-
-# Check formatting
-npm run format:check
-
-# Type check
-npm run type-check
-
-# Validate all (type-check + lint + test + build)
-npm run validate
-
-# Deploy to GitHub Pages
-npm run deploy
 ```
-
-## 🚀 Deployment
-
-This project is configured for automatic deployment to GitHub Pages using GitHub Actions.
-
-### Setup GitHub Pages
-
-1. Go to your repository settings
-2. Navigate to **Pages** → **Build and deployment**
-3. Set **Source** to "GitHub Actions"
-4. Push to main branch to trigger deployment
-
-Your site will be available at: `https://trevorh2007.github.io/wordle-clone/`
 
 ## 📄 License
 

@@ -16,6 +16,11 @@ import {
   InvalidWordMessage,
   HardModeErrorMessage,
 } from "./GameMessages";
+import {
+  LoadingMessage,
+  ErrorContainer,
+  RetryButton,
+} from "./GameTiles.styles";
 import Keyboard from "./Keyboard";
 
 const GameTiles = ({ hardMode, flipDelay = 500 }) => {
@@ -32,13 +37,17 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
   );
   const [hardModeTiles, setHardModeTiles] = useState([]);
   const [hardModeError, setHardModeError] = useState(false);
+  const [fetchingWord, setFetchingWord] = useState(true);
 
   const getWordle = async () => {
     try {
+      setFetchingWord(true);
       const word = await getWordFetch();
       setWordle(word);
+      setFetchingWord(false);
     } catch (err) {
       console.error(err);
+      setFetchingWord(false);
     }
   };
 
@@ -87,11 +96,13 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
     }
   }, [loser]);
 
+  // Fetch initial wordle on mount
   useEffect(() => {
-    if (wordle === "") {
-      getWordle();
-    }
+    getWordle();
+  }, []);
 
+  // Set up keyboard listener
+  useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
@@ -272,24 +283,35 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
 
   return (
     <>
-      <GameBoard guessRows={guessRows} />
-      {hardModeError && <HardModeErrorMessage />}
-      {winnerWinner && (
-        <WinnerMessage
-          wordle={wordle}
-          definition={definition}
-          setDefinition={setDefinition}
-        />
+      {fetchingWord ? (
+        <LoadingMessage>Fetching a word...</LoadingMessage>
+      ) : !wordle || wordle === "" ? (
+        <ErrorContainer>
+          <LoadingMessage>Failed to fetch word.</LoadingMessage>
+          <RetryButton onClick={getWordle}>Try again</RetryButton>
+        </ErrorContainer>
+      ) : (
+        <>
+          <GameBoard guessRows={guessRows} />
+          {hardModeError && <HardModeErrorMessage />}
+          {winnerWinner && (
+            <WinnerMessage
+              wordle={wordle}
+              definition={definition}
+              setDefinition={setDefinition}
+            />
+          )}
+          {loser && (
+            <LoserMessage
+              wordle={wordle}
+              definition={definition}
+              setDefinition={setDefinition}
+            />
+          )}
+          {gameOver && <NewGameButton onClick={resetGame} />}
+          {!isAValidWord && <InvalidWordMessage />}
+        </>
       )}
-      {loser && (
-        <LoserMessage
-          wordle={wordle}
-          definition={definition}
-          setDefinition={setDefinition}
-        />
-      )}
-      {gameOver && <NewGameButton onClick={resetGame} />}
-      {!isAValidWord && <InvalidWordMessage />}
       <Keyboard onKeyClick={handleKeyClick} />
     </>
   );
