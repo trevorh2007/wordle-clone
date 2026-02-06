@@ -2,9 +2,9 @@ import React from "react";
 
 import { GameTileContainer, TileRow, Tile } from "./GameTiles.styles";
 
-const GameBoard = ({ guessRows }) => {
+const GameBoard = ({ guessRows, shake = false }) => {
   return (
-    <GameTileContainer>
+    <GameTileContainer className={shake ? "shake" : ""}>
       {guessRows.map((tile, i) => (
         <TileRow id={"guessRow-" + i} key={i}>
           {tile.map((guess, j) => (

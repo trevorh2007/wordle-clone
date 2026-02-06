@@ -38,6 +38,8 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
   const [hardModeTiles, setHardModeTiles] = useState([]);
   const [hardModeError, setHardModeError] = useState(false);
   const [fetchingWord, setFetchingWord] = useState(true);
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [shake, setShake] = useState(false);
 
   const getWordle = async () => {
     try {
@@ -69,6 +71,10 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
   };
 
   const handleKeyClick = (letter) => {
+    if (isFlipping) {
+      triggerShake();
+      return;
+    }
     if (letter === "<<") {
       deleteLetter();
       return;
@@ -80,6 +86,11 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
     if (currentTile < WORD_LENGTH && currentRow < MAX_GUESSES) {
       addLetter(letter);
     }
+  };
+
+  const triggerShake = () => {
+    setShake(true);
+    setTimeout(() => setShake(false), 500);
   };
 
   // Track wins
@@ -109,9 +120,13 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
       window.removeEventListener("keydown", handleKeyDown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTile, currentRow, gameOver, guessRows, loser]);
+  }, [currentTile, currentRow, gameOver, guessRows, loser, isFlipping]);
 
   const handleKeyDown = (e) => {
+    if (isFlipping) {
+      triggerShake();
+      return;
+    }
     if (e.keyCode === 13 && currentTile === WORD_LENGTH) {
       if (gameOver) {
         resetGame();
@@ -188,6 +203,7 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
   };
 
   const flipTile = () => {
+    setIsFlipping(true);
     return new Promise((resolve) => {
       const rowTiles = document.querySelector(
         "#guessRow-" + currentRow,
@@ -234,6 +250,7 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
 
       setTimeout(
         () => {
+          setIsFlipping(false);
           resolve("done flipping");
         },
         flipDelay * WORD_LENGTH + (flipDelay > 0 ? 200 : 0),
@@ -292,7 +309,7 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
         </ErrorContainer>
       ) : (
         <>
-          <GameBoard guessRows={guessRows} />
+          <GameBoard guessRows={guessRows} shake={shake} />
           {hardModeError && <HardModeErrorMessage />}
           {winnerWinner && (
             <WinnerMessage
@@ -312,7 +329,7 @@ const GameTiles = ({ hardMode, flipDelay = 500 }) => {
           {!isAValidWord && <InvalidWordMessage />}
         </>
       )}
-      <Keyboard onKeyClick={handleKeyClick} />
+      <Keyboard onKeyClick={handleKeyClick} hardMode={hardMode} />
     </>
   );
 };

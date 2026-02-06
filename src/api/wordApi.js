@@ -84,33 +84,39 @@ export const getIsWordFetch = async (word) => {
 /**
  * Fetches the definition of a word
  * @param {string} word - The word to get definition for
- * @returns {Promise<string>} Formatted definition string
+ * @returns {Promise<Object>} Object with definitions grouped by part of speech
  */
 export const getDefinitionFetch = async (word) => {
   try {
     const response = await fetch(getDictionaryApiUrl(word));
     const data = await response.json();
-    let fullDef = "";
-    let defNumber = 1;
 
-    // Extract definitions from the response
+    // Group definitions by part of speech
+    const definitionsByPartOfSpeech = {};
+
     if (data?.entries && data.entries.length > 0) {
       data.entries.forEach((entry) => {
         const partOfSpeech = entry.partOfSpeech;
+
+        if (!definitionsByPartOfSpeech[partOfSpeech]) {
+          definitionsByPartOfSpeech[partOfSpeech] = [];
+        }
+
         if (entry.senses && entry.senses.length > 0) {
           entry.senses.forEach((sense) => {
             if (sense.definition) {
-              fullDef += `${defNumber}. (${partOfSpeech}) ${sense.definition}\n`;
-              defNumber++;
+              definitionsByPartOfSpeech[partOfSpeech].push(sense.definition);
             }
           });
         }
       });
     }
 
-    return fullDef || "Definition not available";
+    return Object.keys(definitionsByPartOfSpeech).length > 0
+      ? definitionsByPartOfSpeech
+      : null;
   } catch (error) {
     console.error("Error fetching definition:", error);
-    return "Definition not available";
+    return null;
   }
 };
