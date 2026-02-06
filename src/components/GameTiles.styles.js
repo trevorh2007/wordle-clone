@@ -325,3 +325,31 @@ export const HardModeError = styled.div`
     padding-top: 15px;
   }
 `;
+
+export const LoadingMessage = styled.div`
+  color: #fff;
+  font-size: 24px;
+  margin-top: 20px;
+  text-align: center;
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+`;
+
+export const RetryButton = styled.button`
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #538d4e;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background: #6aaa64;
+  }
+`;

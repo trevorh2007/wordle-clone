@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { getDefinitionFetch } from "../api/wordApi";
 
 const DefinitionContainer = styled.div`
-  max-width: 500px;
+  max-width: 1000px;
   width: 90%;
   font-size: 16px;
   margin-top: 15px;
