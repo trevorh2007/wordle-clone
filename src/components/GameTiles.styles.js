@@ -6,6 +6,30 @@ export const GameTileContainer = styled.div`
   align-items: center;
   margin-top: 50px;
 
+  &.shake {
+    animation: shake 0.5s;
+  }
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translateX(-5px);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: translateX(5px);
+    }
+  }
+
   @media (max-width: 768px) {
     margin-top: 30px;
   }
@@ -92,7 +116,9 @@ export const KeyButton = styled.div`
   align-items: center;
   border-radius: 4px;
   border: none;
-  background-color: #818384;
+  background-color: ${(props) => (props.$hardMode ? "#222" : "#818384")};
+  color: ${(props) => (props.$hardMode ? "red" : "#fff")};
+  transition: 1s all ease;
   margin: 4px;
   user-select: none;
   &:nth-child(11) {

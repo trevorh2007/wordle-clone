@@ -4,11 +4,16 @@ import { KEYBOARD_KEYS } from "../constants/gameConstants";
 
 import { KeyboardContainer, KeyButton } from "./GameTiles.styles";
 
-const Keyboard = ({ onKeyClick }) => {
+const Keyboard = ({ onKeyClick, hardMode }) => {
   return (
     <KeyboardContainer>
       {KEYBOARD_KEYS.map((letter, i) => (
-        <KeyButton id={letter} key={i} onClick={() => onKeyClick(letter)}>
+        <KeyButton
+          id={letter}
+          key={i}
+          onClick={() => onKeyClick(letter)}
+          $hardMode={hardMode}
+        >
           {letter}
         </KeyButton>
       ))}
