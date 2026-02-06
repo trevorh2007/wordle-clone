@@ -38,7 +38,7 @@ const fetchWithTimeout = (url, timeoutMs = 8000) => {
  * Fetches a random 5-letter word for the game
  * @returns {Promise<string>} A random 5-letter word in uppercase
  */
-export const getWordFetch = async () => {
+export const getWordFetch = async (retryCount = 0, maxRetries = 3) => {
   try {
     // Using Random Word API with 8 second timeout
     const response = await fetchWithTimeout(
@@ -49,10 +49,18 @@ export const getWordFetch = async () => {
 
     if (data && data[0]) {
       // Check if word is valid in our dictionary api
-      const wordInDictionary = await getIsWordFetch(data[0]);
+      const isWordValid = await getIsWordFetch(data[0]);
 
-      if (!wordInDictionary) {
-        return getRandomFallbackWord();
+      if (!isWordValid) {
+        if (retryCount < maxRetries) {
+          console.log(
+            `Invalid word "${data[0]}". Retrying... (${retryCount + 1}/${maxRetries})`,
+          );
+          return await getWordFetch(retryCount + 1, maxRetries); // Recursively fetch another word if not valid;
+        } else {
+          console.log("Max retries reached. Falling back to random word.");
+          return getRandomFallbackWord();
+        }
       }
 
       return data[0].toUpperCase();
